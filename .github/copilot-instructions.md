@@ -1,115 +1,54 @@
 # Copilot Instructions: Soc Ops
 
-Social Bingo game for in-person mixers. Players find people who match questions on their board and aim for 5 in a row.
+Social Bingo game for in-person mixers. 5×5 grid, get 5 in a row to win.
+
+## Development Checklist
+
+Before committing changes:
+- [ ] Run `npm run lint` and fix all errors
+- [ ] Run `npm run build` successfully
+- [ ] Run `npm run test` and ensure all tests pass
 
 ## Architecture
 
-**Component Hierarchy:**
-- [App.tsx](../src/App.tsx) → orchestrates game flow via `useBingoGame` hook
-- [StartScreen.tsx](../src/components/StartScreen.tsx) → initial state
-- [GameScreen.tsx](../src/components/GameScreen.tsx) → active game board
-  - [BingoBoard.tsx](../src/components/BingoBoard.tsx) → grid container
-    - [BingoSquare.tsx](../src/components/BingoSquare.tsx) → individual square
-- [BingoModal.tsx](../src/components/BingoModal.tsx) → victory state
+**Component Flow:** [App.tsx](../src/App.tsx) → `useBingoGame` hook → [GameScreen.tsx](../src/components/GameScreen.tsx) → [BingoBoard.tsx](../src/components/BingoBoard.tsx) → [BingoSquare.tsx](../src/components/BingoSquare.tsx)
 
-**State Management:**
-- Single custom hook pattern: [useBingoGame.ts](../src/hooks/useBingoGame.ts) manages all game state
-- Pure functions in [bingoLogic.ts](../src/utils/bingoLogic.ts) handle board generation, square toggling, and bingo detection
-- LocalStorage persistence with validation (`STORAGE_KEY = 'bingo-game-state'`, versioned)
+**State:** Single hook [useBingoGame.ts](../src/hooks/useBingoGame.ts) + pure functions in [bingoLogic.ts](../src/utils/bingoLogic.ts). Props down, callbacks up. Persisted to localStorage (versioned, validated).
 
-**Data Flow:**
-1. `generateBoard()` creates 5×5 grid with center free space (index 12)
-2. `toggleSquare()` returns new board array (immutable updates)
-3. `checkBingo()` validates all rows/columns/diagonals
-4. Hook syncs state to localStorage on changes
+**Types:** [types/index.ts](../src/types/index.ts) defines `BingoSquareData`, `BingoLine`, `GameState`
 
-## Key Patterns
+**Game Logic:** `generateBoard()` → shuffled 5×5 with center free space (index 12). `toggleSquare()` → immutable updates. `checkBingo()` → validates rows/columns/diagonals.
 
-### TypeScript Domain Types
-All game types defined in [types/index.ts](../src/types/index.ts):
-- `BingoSquareData` → square state (id, text, isMarked, isFreeSpace)
-- `BingoLine` → winning line definition (type, index, squares array)
-- `GameState` → `'start' | 'playing' | 'bingo'`
+## Styling (Tailwind v4)
 
-### Pure Functional Logic
-[bingoLogic.ts](../src/utils/bingoLogic.ts) exports pure functions only:
-- No side effects, no DOM manipulation
-- All functions return new data structures
-- Tested with [bingoLogic.test.ts](../src/utils/bingoLogic.test.ts) (220+ lines)
-
-### Component Props Pattern
-Components receive data + callbacks, never manage state directly:
-```tsx
-<GameScreen
-  board={board}           // Display data
-  winningSquareIds={...}  // Computed state
-  onSquareClick={...}     // Action callbacks
-/>
+**Theme:** Define in [index.css](../src/index.css) `@theme` block (not config file):
+```css
+@theme {
+  --color-accent: #2563eb;
+  --color-marked: #dcfce7;
+}
 ```
+Use as `bg-accent`, `bg-marked`. Opacity: `bg-black/50`. See [BingoSquare.tsx](../src/components/BingoSquare.tsx) for state-based styling pattern.
 
-## Styling
+## Commands
 
-**Tailwind CSS v4** with CSS-first configuration in [index.css](../src/index.css):
-- Theme colors defined via `@theme` directive (not `tailwind.config.js`)
-- Custom colors: `--color-accent`, `--color-marked`, `--color-marked-border`, `--color-bingo`
-- Use directly in classes: `bg-marked`, `border-marked-border`, `text-accent`
-- Opacity via slash syntax: `bg-black/50` (not `bg-opacity-50`)
+- `npm run dev` → Vite dev server
+- `npm run build` → Production build (auto-deploys to GitHub Pages on `main`)
+- `npm run test` → Vitest (no watch mode)
+- `npm run lint` → ESLint
 
-**State Styling Pattern:**
-- Conditional classes based on props: `square.isMarked ? 'bg-marked' : 'bg-white'`
-- Winning squares: amber colors (`bg-amber-200`, `border-amber-400`)
-- See [BingoSquare.tsx](../src/components/BingoSquare.tsx) for canonical example
+## Common Edits
 
-## Development Workflow
+**Add Questions:** Append to `questions[]` in [data/questions.ts](../src/data/questions.ts) (24 min)
 
-### Commands
-- `npm run dev` → Vite dev server (default task, currently running)
-- `npm run build` → TypeScript compilation + Vite production build
-- `npm run test` → Vitest (runs once, no watch mode)
-- `npm run lint` → ESLint with TypeScript rules
+**Change Board Size:** Update `BOARD_SIZE`, `CENTER_INDEX`, `getWinningLines()` in [bingoLogic.ts](../src/utils/bingoLogic.ts)
 
-### Testing Setup
-- Vitest with jsdom environment ([vite.config.ts](../vite.config.ts))
-- React Testing Library with jest-dom matchers ([test/setup.ts](../src/test/setup.ts))
-- Test pattern: mock boards in `beforeEach`, verify pure function outputs
+**Add Theme Color:** Add to `@theme` in [index.css](../src/index.css), use as `bg-[name]`
 
-### Deployment
-- Auto-deploys to GitHub Pages on push to `main` ([.github/workflows/deploy.yml](../.github/workflows/deploy.yml))
-- Base path auto-detected via `VITE_REPO_NAME` env var
-- Serves from `/dist` directory
-
-## Content Management
-
-**Questions File:** [data/questions.ts](../src/data/questions.ts)
-- Export `questions: string[]` (24 items minimum)
-- Export `FREE_SPACE` constant for center square
-- Board generation shuffles and slices first 24 questions
-
-## Common Tasks
-
-**Add New Question:**
-1. Append to `questions` array in [questions.ts](../src/data/questions.ts)
-2. No code changes needed (board generation handles it)
-
-**Modify Board Size:**
-1. Update `BOARD_SIZE` and `CENTER_INDEX` in [bingoLogic.ts](../src/utils/bingoLogic.ts)
-2. Adjust `getWinningLines()` logic
-3. Update question array slice logic
-
-**Change Styling:**
-1. Add theme colors to `@theme` block in [index.css](../src/index.css)
-2. Use directly in components: `bg-[color-name]`
-3. No config file needed (Tailwind v4 pattern)
-
-**Add Persistence Field:**
-1. Update `StoredGameData` interface in [useBingoGame.ts](../src/hooks/useBingoGame.ts)
-2. Increment `STORAGE_VERSION` constant
-3. Update `validateStoredData()` function
+**Add Persistence Field:** Update `StoredGameData` + increment `STORAGE_VERSION` + update `validateStoredData()` in [useBingoGame.ts](../src/hooks/useBingoGame.ts)
 
 ## Constraints
 
-- Center square (index 12) always free space, always marked
-- Free space cannot be toggled
-- Bingo requires exactly 5 consecutive squares (no diagonal wrapping)
-- LocalStorage validation prevents corrupted state from crashing app
-- SSR-safe: hooks check `typeof window !== 'undefined'` before localStorage access
+- Center square (index 12) = free space (always marked, non-toggleable)
+- Bingo = exactly 5 consecutive squares in row/column/diagonal
+- SSR-safe: check `typeof window !== 'undefined'` before localStorage
