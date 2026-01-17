@@ -7,7 +7,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
     <div className="relative min-h-full bg-mono-white overflow-hidden">
       {/* Thick vertical border beam - structural element */}
       <div 
-        className="absolute left-16 top-0 bottom-0 w-0 border-l-6 border-mono-black"
+        className="absolute left-16 top-0 bottom-0 border-l-6 border-mono-black"
         style={{ 
           animation: 'borderPulse 3s ease-in-out infinite'
         }}
@@ -31,8 +31,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
               className="text-7xl font-bold text-mono-black uppercase tracking-widest pl-24"
               style={{ 
                 animation: 'slideInRight 0.8s ease-out 0.15s forwards',
-                opacity: 0,
-                animationFillMode: 'forwards'
+                opacity: 0
               }}
             >
               OPS
@@ -41,8 +40,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
               className="text-sm text-mono-gray uppercase tracking-widest mt-4 pl-24"
               style={{ 
                 animation: 'slideInUp 0.8s ease-out 0.3s forwards',
-                opacity: 0,
-                animationFillMode: 'forwards'
+                opacity: 0
               }}
             >
               Social Bingo
@@ -54,8 +52,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
             className="relative mb-16"
             style={{ 
               animation: 'slideInUp 0.8s ease-out 0.45s forwards',
-              opacity: 0,
-              animationFillMode: 'forwards'
+              opacity: 0
             }}
           >
             {/* Top horizontal border */}
@@ -80,8 +77,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
             className="flex justify-start"
             style={{ 
               animation: 'slideInUp 0.8s ease-out 0.6s forwards',
-              opacity: 0,
-              animationFillMode: 'forwards'
+              opacity: 0
             }}
           >
             <button
