@@ -17,7 +17,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
         <h1 className="text-9xl font-black text-mono-black mb-4 tracking-widest uppercase">
           {letters.map((letter, index) => (
             <span
-              key={index}
+              key={`hero-letter-${index}-${letter.char}`}
               className="inline-block animate-fade-in-up"
               style={{
                 animationDelay: `${letter.delay}ms`,

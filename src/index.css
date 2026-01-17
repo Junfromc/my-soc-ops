@@ -81,6 +81,8 @@ body {
   animation: pulse 2s ease-in-out infinite;
 }
 
+/* Combined animation: fade in quickly (0.6s equivalent at 30% of 2s cycle), then pulse continuously.
+   2s duration chosen for slow, subtle breathing effect that doesn't distract from content. */
 .animate-fade-in-then-pulse {
   animation: fadeInThenPulse 2s ease-in-out infinite;
 }
