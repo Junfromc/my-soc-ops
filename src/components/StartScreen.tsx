@@ -61,7 +61,7 @@ export function StartScreen({ onStart }: StartScreenProps) {
         {/* CTA button with delayed fade-in and continuous pulse */}
         <button
           onClick={onStart}
-          className="w-full bg-mono-black text-mono-white font-bold py-5 px-10 text-lg uppercase tracking-wide hover:bg-mono-gray-dark transition-colors animate-fade-in animate-pulse-subtle"
+          className="w-full bg-mono-black text-mono-white font-bold py-5 px-10 text-lg uppercase tracking-wide hover:bg-mono-gray-dark transition-colors animate-fade-in-then-pulse"
           style={{
             animationDelay: "450ms",
             opacity: 0,

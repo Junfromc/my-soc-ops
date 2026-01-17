@@ -50,6 +50,24 @@ body {
   }
 }
 
+@keyframes fadeInThenPulse {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Animation utility classes */
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
@@ -63,11 +81,16 @@ body {
   animation: pulse 2s ease-in-out infinite;
 }
 
+.animate-fade-in-then-pulse {
+  animation: fadeInThenPulse 2s ease-in-out infinite;
+}
+
 /* Respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-up,
   .animate-fade-in,
-  .animate-pulse-subtle {
+  .animate-pulse-subtle,
+  .animate-fade-in-then-pulse {
     animation: none;
     opacity: 1;
     transform: none;
