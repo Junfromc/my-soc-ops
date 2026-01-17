@@ -4,13 +4,13 @@ interface StartScreenProps {
 
 export function StartScreen({ onStart }: StartScreenProps) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-full p-6 bg-mono-white">
-      <div className="text-center max-w-sm">
-        <h1 className="text-5xl font-bold text-mono-black mb-1 tracking-tight">SOC OPS</h1>
-        <p className="text-sm text-mono-gray mb-12 uppercase tracking-widest">Social Bingo</p>
+    <div className="flex flex-col items-center justify-center min-h-full p-6 bg-mono-white pattern-grid">
+      <div className="text-center max-w-lg border-4 border-mono-black bg-mono-white p-10 fade-in">
+        <h1 className="text-7xl font-black text-mono-black mb-2 uppercase tracking-wide">SOC OPS</h1>
+        <p className="text-sm text-mono-gray mb-16 uppercase tracking-widest">Social Bingo</p>
         
-        <div className="border-2 border-mono-black p-8 mb-12">
-          <h2 className="font-bold text-mono-black mb-4 uppercase tracking-wide text-base">How to play</h2>
+        <div className="border-4 border-mono-black p-8 mb-16">
+          <h2 className="font-bold text-mono-black mb-6 uppercase tracking-wide text-base">How to play</h2>
           <ul className="text-left text-mono-gray-dark text-sm space-y-3">
             <li>— Find people who match the questions</li>
             <li>— Tap a square when you find a match</li>
